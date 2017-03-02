@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Form, FormGroup, FormControl, Col, ControlLabel} from 'react-bootstrap';
+import {Form, FormGroup, FormControl, Col, ControlLabel, Button} from 'react-bootstrap';
 import LoanSchema from '../shared/models/schemas/Loan.json';
 
 
@@ -44,6 +44,7 @@ class LoanForm extends Component {
 		return (
 			<Form horizontal>
 				{ this.getForm() }
+				<Button type="submit">Submit</Button>
 			</Form>
 		);
 	}

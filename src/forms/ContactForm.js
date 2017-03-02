@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Form, FormGroup, FormControl, Col, ControlLabel} from 'react-bootstrap';
+import {Form, FormGroup, FormControl, Col, ControlLabel, Button} from 'react-bootstrap';
 import ContactSchema from '../shared/models/schemas/Contact.json';
 
 
@@ -21,7 +21,7 @@ class ContactForm extends Component {
 			{
 				ret.push(
 					<FormGroup controlId="formHorizontalEmail" key={k}>
-						<Col componentClass={ControlLabel} sm={2}>
+						<Col componentClass={ControlLabel} sm={1}>
 							{ k }
 						</Col>
 						<Col sm={10}>
@@ -44,6 +44,7 @@ class ContactForm extends Component {
 		return (
 			<Form horizontal>
 				{ this.getForm() }
+				<Button type="submit">Submit</Button>
 			</Form>
 		);
 	}
