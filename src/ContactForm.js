@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import {Form, FormGroup, FormControl, Col, ControlLabel} from 'react-bootstrap';
 import ContactSchema from './shared/models/schemas/Contact.json';
 
 
@@ -14,8 +15,19 @@ class ContactForm extends Component {
 	getForm()
 	{
 		var ret = [];
-		for (var k in ContactSchema) {
-			ret.push(<div key={k}>{ k } <input type="text" name="{ k }" value={ ContactSchema[k].default ? ContactSchema[k].default : "" }></input></div>);
+		for (var k in ContactSchema)
+		{
+			ret.push(
+				<FormGroup controlId="formHorizontalEmail" key={k}>
+					<Col componentClass={ControlLabel} sm={2}>
+						{ k }
+					</Col>
+					<Col sm={10}>
+						<FormControl type="text" name={ k } placeholder={k}
+									 value={ ContactSchema[k].default ? ContactSchema[k].default : "" }/>
+					</Col>
+				</FormGroup>
+			);
 		}
 		return ret;
 	}
@@ -24,10 +36,14 @@ class ContactForm extends Component {
 	 *
 	 * @returns {XML}
 	 */
-	render() {
+	render()
+	{
 		return (
 			<div>
-				<div>{ this.getForm() }</div>
+				<h3>Contact</h3>
+				<Form horizontal>
+					{ this.getForm() }
+				</Form>
 			</div>
 		);
 	}
