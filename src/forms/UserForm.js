@@ -13,6 +13,7 @@ class UserForm extends AbstractForm {
 	constructor(props)
 	{
 		super(props);
+		this.modelName = 'user';
 		this.modelSchema = _modelSchema;
 		this.init();
 	}

@@ -13,6 +13,7 @@ class LoanForm extends AbstractForm {
 	constructor(props)
 	{
 		super(props);
+		this.modelName = 'loan';
 		this.modelSchema = _modelSchema;
 		this.init();
 	}

@@ -12,6 +12,7 @@ class ContactForm extends AbstractForm {
 	constructor(props)
 	{
 		super(props);
+		this.modelName = 'contact';
 		this.modelSchema = _modelSchema;
 		this.init();
 	}
