@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Form, FormGroup, FormControl, Col, ControlLabel, Button, Alert} from 'react-bootstrap';
+import {Form, FormGroup, FormControl, Col, ControlLabel, Button, Alert, Checkbox} from 'react-bootstrap';
 
 /**
  * Generic form component; will generate a form based on a Mongoose schema stored in this.modelSchema
@@ -32,7 +32,11 @@ class AbstractForm extends Component {
 	handleChange(e, k)
 	{
 		var _o = {};
-		_o[k] = e.target.value;
+		if (e.target.type === 'checkbox')
+			_o[k] = !this.state[k];
+		else if (e.target.value)
+			_o[k] = e.target.value;
+		console.log(_o);
 		this.setState(_o);
 	}
 
@@ -46,9 +50,7 @@ class AbstractForm extends Component {
 	apiCall(model, command, payload)
 	{
 		// CRUD (Create, Update, Delete)
-		// http://localhost:3010/api/user/insert
 		var _baseUrl = 'http://localhost:3010/api/';
-		// return fetch( _baseUrl + model + '/' + command);
 		var fetchParams = {
 			method: 'POST',
 			body: JSON.stringify(payload),
@@ -79,7 +81,8 @@ class AbstractForm extends Component {
 	/**
 	 *
 	 */
-	handleAlertDismiss() {
+	handleAlertDismiss()
+	{
 		this.setState({alertVisible: false});
 	}
 
@@ -88,7 +91,8 @@ class AbstractForm extends Component {
 	 * @param alertMessage
 	 * @param alertStyle
 	 */
-	handleAlertShow(alertMessage='', alertStyle='info') {
+	handleAlertShow(alertMessage = '', alertStyle = 'info')
+	{
 		this.setState({alertVisible: true, alertMessage: alertMessage, alertStyle: alertStyle});
 	}
 
@@ -126,7 +130,61 @@ class AbstractForm extends Component {
 				console.error(error);
 			}
 		);
+	}
 
+	/**
+	 * Returns the form element which form varies according to the schema
+	 * @param k
+	 * @returns {XML}
+	 */
+	getFormElement(k)
+	{
+		var _s = this.modelSchema[k];
+		var _reqdeco = '';
+		var _reqVal = false;
+		var _type = 'text';
+		var _element = '';
+		if (typeof _s.required !== 'undefined' && _s.required === true)
+		{
+			_reqdeco = '*';
+			_reqVal = true;
+		}
+		if (k.match(/password/g))
+			_type = 'password';
+		if (k.match(/email/g))
+			_type = 'email';
+		if (k.match(/date/g))
+			_type = 'date';
+		if (_s.type && _s.type === 'Number')
+			_type = 'number';
+
+		// form element - checkbox
+		if (_s.type && _s.type === "Boolean")
+		{
+			_element = (<Checkbox key={k} checked={this.state[k]} name={ k } onChange={ (e) => this.handleChange(e, k) }></Checkbox>);
+		}
+		// form element - select
+		else if (_s.enum && _s.enum.length > 0)
+		{
+			var _options = [];
+			_s.enum.map((v) => _options.push( <option key={ k+v } value={v}>{v}</option> ));
+			_element = (<FormControl componentClass="select" key={k} name={ k }
+									 value={ this.state[k] } required={_reqVal}
+									 onChange={ (e) => this.handleChange(e, k) }>{ _options }</FormControl>);
+		}
+		// form element - other (text)
+		else
+		{
+			_element = (<FormControl key={k} type={ _type } name={ k } placeholder={k} value={ this.state[k] }
+									 required={_reqVal} onChange={ (e) => this.handleChange(e, k) }/>);
+		}
+
+		return (
+			<FormGroup controlId="formHorizontalEmail" key={k}>
+				<Col componentClass={ControlLabel} sm={2}>{ k + _reqdeco }</Col>
+				<Col sm={10}>{ _element }</Col>
+			</FormGroup>
+		);
 	}
 
 	/**
@@ -137,23 +195,12 @@ class AbstractForm extends Component {
 	{
 		return (
 			<div>
-				<Alert bsStyle={this.state.alertStyle} onDismiss={() => this.handleAlertDismiss() } className={this.state.alertVisible ? '' : 'hidden' }>
+				<Alert bsStyle={this.state.alertStyle} onDismiss={() => this.handleAlertDismiss() }
+					   className={this.state.alertVisible ? '' : 'hidden' }>
 					{ this.state.alertMessage }
 				</Alert>
 				<Form horizontal onSubmit={ (e) => this.handleSubmit(e) }>
-					{
-						Object.keys(this.modelSchema).map((k) =>
-							{
-								return (<FormGroup controlId="formHorizontalEmail" key={k}>
-									<Col componentClass={ControlLabel} sm={2}>{ k }</Col>
-									<Col sm={10}>
-										<FormControl key={k} type="text" name={ k } placeholder={k} value={ this.state[k] }
-													 onChange={ (e) => this.handleChange(e, k) }/>
-									</Col>
-								</FormGroup>);
-							}
-						)
-					}
+					{ Object.keys(this.modelSchema).map((k) => this.getFormElement(k)) }
 					<Col sm={2}></Col>
 					<Col sm={10}>
 						<Button type="submit" bsStyle="primary">Submit</Button>
