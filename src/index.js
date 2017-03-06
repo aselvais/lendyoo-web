@@ -16,10 +16,8 @@ class Index extends Component {
 	render()
 	{
 		return (
-			<div className="container">
-
-
-				<Navbar inverse collapseOnSelect>
+			<div className="containerFluid">
+				<Navbar inverse>
 					<Navbar.Header>
 						<Navbar.Brand>
 							<a href="#">Lendyoo Admin</a>
@@ -37,7 +35,7 @@ class Index extends Component {
 
 
 				<div>
-					<div className="row">
+					<div className="containerFluid">
 						{this.props.children}
 					</div>
 				</div>
