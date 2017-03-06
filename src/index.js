@@ -8,6 +8,7 @@ import Home from './sections/Home';
 import Contact from './sections/Contact';
 import Loan from './sections/Loan';
 import User from './sections/User';
+import Group from './sections/Group';
 
 /**
  *
@@ -29,6 +30,7 @@ class Index extends Component {
 							<li role="presentation"><Link to="/contact" activeClassName="active" role="button"> Contact </Link></li>
 							<li role="presentation"><Link to="/loan" activeClassName="active" role="button"> Loan </Link></li>
 							<li role="presentation"><Link to="/user" activeClassName="active" role="button"> User </Link></li>
+							<li role="presentation"><Link to="/group" activeClassName="active" role="button"> Group </Link></li>
 						</ul>
 					</Navbar.Collapse>
 				</Navbar>
@@ -51,6 +53,7 @@ ReactDOM.render(
 			<Route path="contact" component={Contact}/>
 			<Route path="loan" component={Loan}/>
 			<Route path="user" component={User}/>
+			<Route path="group" component={Group}/>
 		</Route>
 	</Router>,
 	document.getElementById('root')
