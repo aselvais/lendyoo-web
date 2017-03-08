@@ -1,4 +1,5 @@
 import UserAbstract from '../shared/models/UserAbstract';
+import _schema from '../shared/models/schemas/User.json';
 
 /**
  *
@@ -6,6 +7,11 @@ import UserAbstract from '../shared/models/UserAbstract';
 class User extends UserAbstract
 {
 
+	constructor(params)
+	{
+		super(params);
+		this.setSchema(_schema);
+	}
 
 }
 
