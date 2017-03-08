@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import User from '../models/User';
+import User from '../shared/models/frontend/User';
 
 class Home extends Component {
 
