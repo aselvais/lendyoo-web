@@ -6,6 +6,7 @@
     "react-scripts": "0.9.3"
   },
   "dependencies": {
+    "mongoose-class-wrapper": "^0.8.1",
     "react": "^15.4.2",
     "react-bootstrap": "^0.30.7",
     "react-dom": "^15.4.2",
