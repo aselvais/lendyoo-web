@@ -10,7 +10,18 @@ class Home extends Component {
 	constructor(props)
 	{
 		super(props);
-		this.user = new User({ fname: 'Arnaud', lname: 'Selvais' });
+		this._user = new User({ fname: 'Fake', lname: 'User' });
+		this.state = {
+			user: this._user
+		};
+
+		var _that = this;
+		this._user.populateDataFromRemote('58c083625c4759159048dffc').then(
+			function(d) {
+				if (d) _that.setState( {user: _that._user } );
+			}
+		);
+
 	}
 
 	/**
@@ -21,7 +32,7 @@ class Home extends Component {
 		return (
 			<div>
 				<h3>Home</h3>
-				THIS IS HOME  <b>{this.user.fullName}</b> !!! <br/>
+				THIS IS HOME  <b>{this.state.user.fullName}</b> !!! <br/>
 				Welcome to Lendyoo admin... Have fun ! :-P
 			</div>
 		);
