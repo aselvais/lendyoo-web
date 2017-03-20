@@ -41,41 +41,14 @@ class AbstractForm extends Component {
 	}
 
 	/**
-	 *
-	 * @param model
-	 * @param command
-	 * @param payload
-	 * @returns {Promise} Fetch result
+	 * Saves the data using the frontend model
+	 * @returns {*|Promise.<TResult>}
 	 */
-	apiCall(model, command, payload)
+	save()
 	{
-		// CRUD (Create, Update, Delete)
-		var _baseUrl = 'http://localhost:3010/api/';
-		var fetchParams = {
-			method: 'POST',
-			body: JSON.stringify(payload),
-			mode: 'cors',
-			redirect: 'follow',
-			headers: new Headers({'Content-Type': 'application/json'})
-		};
-		return fetch(_baseUrl + model + '/' + command, fetchParams).then(
-			function (res)
-			{
-				if (res.status === 200)
-				{
-					return res.json().then(function (d)
-					{
-						return d;
-					});
-				}
-				return false;
-			},
-			function (error)
-			{
-				console.error('Error', error);
-				return false;
-			}
-		);
+		this.model.populateParams(this.state);
+		// @todo To implement this here this.model.validate();
+		return this.model.save();
 	}
 
 	/**
@@ -104,25 +77,32 @@ class AbstractForm extends Component {
 	{
 		e.preventDefault();
 		var that = this;
-		this.apiCall(this.modelName, 'create', this.state).then(
-			function (jsonData)
+		this.save().then(
+			function (statusBoolean)
 			{
+				var jsonData = that.model.validationErrorObject;
 				if (jsonData !== false)
 				{
-					console.log(jsonData);
 					if (jsonData.error === 1)
 					{
-						that.handleAlertShow(jsonData.message, 'danger');
+						var emsg = ': ';
+						if (jsonData.data) {
+							for (var i in jsonData.data)
+							{
+								if (jsonData.data[i] && jsonData.data[i].message)
+									emsg += ' ' + jsonData.data[i].message + "\n";
+							}
+						}
+						emsg += '';
+						that.handleAlertShow(jsonData.message + emsg, 'danger');
 					}
 					else if (jsonData.error === 0)
 					{
 						that.handleAlertShow(jsonData.message, 'success');
-					}
+					} else
+						that.handleAlertShow('Unknown error', 'danger');
 				} else
-				{
 					that.handleAlertShow('Unknown error', 'danger');
-					console.error(jsonData);
-				}
 			},
 			function (error)
 			{
