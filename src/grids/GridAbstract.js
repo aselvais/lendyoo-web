@@ -25,7 +25,7 @@ class AbstractGrid extends Component {
 	refreshData()
 	{
 		var that = this;
-		var _baseUrl = 'http://localhost:3010/api/';
+		var _baseUrl = 'http://localhost:3010/api-v2/';
 		var command = 'getcollection';
 		var fetchParams = {
 			method: 'GET',

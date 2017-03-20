@@ -50,7 +50,7 @@ class AbstractForm extends Component {
 	apiCall(model, command, payload)
 	{
 		// CRUD (Create, Update, Delete)
-		var _baseUrl = 'http://localhost:3010/api/';
+		var _baseUrl = 'http://localhost:3010/api-v2/';
 		var fetchParams = {
 			method: 'POST',
 			body: JSON.stringify(payload),
