@@ -33,6 +33,7 @@ class Home extends Component {
 			<div>
 				<h3>Home</h3>
 				THIS IS HOME  <b>{this.state.user.fullName}</b> !!! <br/>
+				You are using this app on  <b>{process.env.NODE_ENV}</b> !!! <br/>
 				Welcome to Lendyoo admin... Have fun ! :-P
 			</div>
 		);
