@@ -14,6 +14,7 @@ class LoanGrid extends AbstractGrid {
 		super(props);
 		this.modelName = 'loan';
 		this.modelSchema = _modelSchema;
+		this.collection = this.lendyooRegistry.loanCollection;
 		this.init();
 	}
 }

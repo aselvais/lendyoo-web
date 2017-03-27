@@ -14,6 +14,7 @@ class ContactGrid extends AbstractGrid {
 		super(props);
 		this.modelName = 'contact';
 		this.modelSchema = _modelSchema;
+		this.collection = this.lendyooRegistry.contactCollection;
 		this.init();
 	}
 }

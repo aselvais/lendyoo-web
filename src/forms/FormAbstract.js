@@ -36,7 +36,7 @@ class AbstractForm extends Component {
 			_o[k] = !this.state[k];
 		else if (e.target.value)
 			_o[k] = e.target.value;
-		console.log(_o);
+		// console.log(_o);
 		this.setState(_o);
 	}
 

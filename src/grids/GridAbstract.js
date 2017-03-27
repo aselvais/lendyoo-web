@@ -1,16 +1,24 @@
 import React, {Component} from 'react';
 import {Table, Glyphicon, Button} from 'react-bootstrap';
+import LendyooRegistry from '../libs/LendyooRegistry';
 
 /**
  *
  */
 class AbstractGrid extends Component {
 
+	/**
+	 *
+	 * @param props
+	 */
 	constructor(props)
 	{
 		super(props);
+		this.lendyooRegistry = new LendyooRegistry();
+		this.collection = null;
 		this.state = {
-			dbdata: []
+			models: [],
+			activeId: null
 		};
 	}
 
@@ -22,69 +30,64 @@ class AbstractGrid extends Component {
 		this.refreshData();
 	}
 
-	refreshData()
-	{
+	/**
+	 *
+	 * @returns {Promise.<TResult>}
+	 */
+	refreshData() {
 		var that = this;
-		var _baseUrl = 'http://174.143.203.77:3010/api-v2/';
-		var command = 'getcollection';
-		var fetchParams = {
-			method: 'GET',
-			mode: 'cors',
-			redirect: 'follow',
-			headers: new Headers({'Content-Type': 'application/json'})
-		};
-		return fetch(_baseUrl + this.modelName + '/' + command, fetchParams).then(
-			function (res)
-			{
-				if (res.status === 200)
-				{
-					return res.json().then(function (d)
-					{
-						if (typeof d.error !== 'undefined' && d.error === 0 && d.data)
-						{
-							that.setState({dbdata: d.data});
-							return true;
-						}
-						else
-						{
-							return false;
-						}
-					});
-				}
-				return false;
+		return that.collection.setRemoteCollection().then(
+			function(d) {
+				that.setState({models: that.collection.models });
 			},
-			function (err)
-			{
-				console.error(err);
-				return false;
+			function(er) {
+				console.error(er);
 			}
 		);
 	}
 
-	getTableLine(o = {})
+	 /**
+	 *
+	 * @param {ModelAbstract} _model
+	 * @returns {Array}
+	 */
+	getTableLine(_model)
 	{
 		var toret = [];
 		for (var i in this.modelSchema)
 		{
-			if (o._id)
+			if (_model._id)
 			{
-				if (o[i])
-					toret.push(<td key={o._id + i}>{o[i]}</td>);
+				if (_model[i])
+					toret.push(<td key={_model._id + i}>{_model[i]}</td>);
 				else
-					toret.push(<td key={o._id + i}></td>);
+					toret.push(<td key={_model._id + i}></td>);
 			}
 		}
 		return toret;
 	}
 
-	deleteEntry(_id='')
+	/**
+	 *
+	 * @param {ModelAbstract}  _model
+	 */
+	deleteEntry(_model)
 	{
-		alert(_id);
+		if (confirm('Are you sure you want to delete this entry?'))
+		{
+			_model.delete();
+		}
 	}
 
-	editEntry(_id='')
+	/**
+	 *
+	 * @param {ModelAbstract} _model
+	 */
+	editEntry(_model)
 	{
-		alert(_id);
+		this.collection.setActiveModel(_model);
+		this.setState({activeId: _model.id});
+//		this.forceUpdate();
 	}
 
 	/**
@@ -111,12 +114,12 @@ class AbstractGrid extends Component {
 					</thead>
 					<tbody>
 					{
-						this.state.dbdata.map(function (o)
+						this.state.models.map(function (o)
 						{
 							return (<tr key={o._id}>{ that.getTableLine(o) }
 								<td>
-									<Button onClick={ () => that.deleteEntry(o._id) } bsSize="xsmall" bsStyle="danger"><Glyphicon glyph="trash"/></Button>&nbsp;
-									<Button onClick={ () => that.editEntry(o._id) } bsSize="xsmall" bsStyle="success"><Glyphicon glyph="pencil"/></Button>&nbsp;
+									<Button onClick={ () => that.deleteEntry(o) } bsSize="xsmall" bsStyle="danger"><Glyphicon glyph="trash"/></Button>&nbsp;
+									<Button onClick={ () => that.editEntry(o) } bsSize="xsmall" bsStyle="success"><Glyphicon glyph="pencil"/></Button>&nbsp;
 								</td>
 							</tr>);
 						})

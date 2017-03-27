@@ -14,6 +14,7 @@ class UserGrid extends AbstractGrid {
 		super(props);
 		this.modelName = 'user';
 		this.modelSchema = _modelSchema;
+		this.collection = this.lendyooRegistry.userCollection;
 		this.init();
 	}
 }

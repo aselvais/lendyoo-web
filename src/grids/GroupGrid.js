@@ -14,6 +14,7 @@ class GroupGrid extends AbstractGrid {
 		super(props);
 		this.modelName = 'group';
 		this.modelSchema = _modelSchema;
+		this.collection = this.lendyooRegistry.groupCollection;
 		this.init();
 	}
 }
