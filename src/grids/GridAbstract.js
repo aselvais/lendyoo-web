@@ -124,7 +124,6 @@ class AbstractGrid extends Component {
 							</tr>);
 						})
 					}
-
 					</tbody>
 				</Table>
 			</div>
