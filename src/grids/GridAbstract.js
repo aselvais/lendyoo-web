@@ -58,13 +58,33 @@ class AbstractGrid extends Component {
 		{
 			if (_model._id)
 			{
-				if (_model[i])
-					toret.push(<td key={_model._id + i}>{_model[i]}</td>);
+				if (typeof _model[i] !== 'undefined')
+					toret.push(<td key={_model._id + i}>{ this.filterEntryDislpay(_model[i]) }</td>);
 				else
 					toret.push(<td key={_model._id + i}></td>);
 			}
 		}
 		return toret;
+	}
+
+	/**
+	 *
+	 * @param e
+	 * @returns {*}
+	 */
+	filterEntryDislpay(e)
+	{
+		var _type = typeof e;
+		console.log(e, _type);
+		switch (_type)
+		{
+			case "object":
+				return JSON.stringify(e);
+			case "boolean":
+				return (e === true) ? (<center><Glyphicon glyph="check" /></center>) : (<center><Glyphicon glyph="unchecked" /></center>);
+			default:
+				return e;
+		}
 	}
 
 	/**
