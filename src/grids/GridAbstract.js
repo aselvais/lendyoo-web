@@ -17,8 +17,7 @@ class AbstractGrid extends Component {
 		this.lendyooRegistry = new LendyooRegistry();
 		this.collection = null;
 		this.state = {
-			models: [],
-			activeId: null
+			models: []
 		};
 	}
 
@@ -59,7 +58,7 @@ class AbstractGrid extends Component {
 			if (_model._id)
 			{
 				if (typeof _model[i] !== 'undefined')
-					toret.push(<td key={_model._id + i}>{ this.filterEntryDislpay(_model[i]) }</td>);
+					toret.push(<td key={_model._id + i}>{ this.filterEntryDislpay(_model[i], i) }</td>);
 				else
 					toret.push(<td key={_model._id + i}></td>);
 			}
@@ -68,11 +67,12 @@ class AbstractGrid extends Component {
 	}
 
 	/**
-	 *
+	 * Returns a filtered/enhanced representation of a field
 	 * @param e
+	 * @param key
 	 * @returns {*}
 	 */
-	filterEntryDislpay(e)
+	filterEntryDislpay(e, key)
 	{
 		/**
 		 * boolean, null, undefined, number, string
@@ -81,9 +81,9 @@ class AbstractGrid extends Component {
 		if (_type === 'string')
 		{
 			var regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-			var mongoDbId = /^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i;
 			if (regEmail.test(e))
 				_type = 'email';
+			var mongoDbId = /^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i;
 			if (mongoDbId.test(e))
 				_type = 'mongoDBid';
 		}
@@ -95,7 +95,7 @@ class AbstractGrid extends Component {
 			case "email":
 				return (<a href={ 'mailto:'+e }>{e}</a>);
 			case "mongoDBid":
-				return (<a onClick={ () => this.showEntry(e) }>{e}</a>);
+				return (<a onClick={ () => this.showEntry(e, key) }>{e}</a>);
 			case "boolean":
 				return (e === true) ? (<center><Glyphicon glyph="check" /></center>) : (<center><Glyphicon glyph="unchecked" /></center>);
 			default:
@@ -107,9 +107,10 @@ class AbstractGrid extends Component {
 	 * Show an entry with the _id passed as param
 	 * @param _id
 	 */
-	showEntry(_id='')
+	showEntry(_id='', key='')
 	{
-		alert('_id: ' + _id + ', BaseModelName: ' + this.modelName + ', ModelName: SHOULD BE THE ENTRY KEY MINUS _id');
+		var _modelName = key.toLowerCase().replace(/_id$/,'');
+		alert('_id: ' + _id + ', ModelName: ' + _modelName);
 	}
 
 	/**
@@ -145,8 +146,7 @@ class AbstractGrid extends Component {
 	editEntry(_model)
 	{
 		this.collection.setActiveModel(_model);
-		this.setState({activeId: _model.id});
-//		this.forceUpdate();
+		this.setState({models: this.collection.models });
 	}
 
 	/**
@@ -158,7 +158,7 @@ class AbstractGrid extends Component {
 		var that = this;
 		return (
 			<div>
-				<Table striped bordered condensed hover>
+				<Table bordered condensed>
 					<thead>
 					<tr>
 						{
@@ -175,7 +175,7 @@ class AbstractGrid extends Component {
 					{
 						this.state.models.map(function (o)
 						{
-							return (<tr key={o._id}>{ that.getTableLine(o) }
+							return (<tr key={o._id} className={ o._isActive ? 'active' : '' }>{ that.getTableLine(o) }
 								<td>
 									<Button onClick={ () => that.deleteEntry(o) } bsSize="xsmall" bsStyle="danger"><Glyphicon glyph="trash"/></Button>&nbsp;
 									<Button onClick={ () => that.editEntry(o) } bsSize="xsmall" bsStyle="success"><Glyphicon glyph="pencil"/></Button>&nbsp;
