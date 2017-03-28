@@ -73,9 +73,23 @@ class AbstractGrid extends Component {
 	 */
 	deleteEntry(_model)
 	{
+		var _that = this;
 		if (confirm('Are you sure you want to delete this entry?'))
 		{
-			_model.delete();
+			_model.delete().then(
+				function(d) {
+					if (d && d.error === 0 && d.data && d.data.n && d.data.n === 1)
+					{
+						_that.collection.removeModel(_model);
+						_that.setState({models: _that.collection.models });
+					}
+					else
+						console.error('Delete - missing params', d);
+				},
+				function(err) {
+					console.error('Could not delete the entry', err);
+				},
+			);
 		}
 	}
 
