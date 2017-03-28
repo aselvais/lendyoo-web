@@ -74,17 +74,42 @@ class AbstractGrid extends Component {
 	 */
 	filterEntryDislpay(e)
 	{
+		/**
+		 * boolean, null, undefined, number, string
+		 */
 		var _type = typeof e;
-		console.log(e, _type);
+		if (_type === 'string')
+		{
+			var regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+			var mongoDbId = /^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i;
+			if (regEmail.test(e))
+				_type = 'email';
+			if (mongoDbId.test(e))
+				_type = 'mongoDBid';
+		}
+
 		switch (_type)
 		{
 			case "object":
 				return JSON.stringify(e);
+			case "email":
+				return (<a href={ 'mailto:'+e }>{e}</a>);
+			case "mongoDBid":
+				return (<a onClick={ () => this.showEntry(e) }>{e}</a>);
 			case "boolean":
 				return (e === true) ? (<center><Glyphicon glyph="check" /></center>) : (<center><Glyphicon glyph="unchecked" /></center>);
 			default:
 				return e;
 		}
+	}
+
+	/**
+	 * Show an entry with the _id passed as param
+	 * @param _id
+	 */
+	showEntry(_id='')
+	{
+		alert('_id: ' + _id + ', BaseModelName: ' + this.modelName + ', ModelName: SHOULD BE THE ENTRY KEY MINUS _id');
 	}
 
 	/**
