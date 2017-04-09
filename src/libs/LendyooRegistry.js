@@ -2,6 +2,7 @@ import Config from '../shared/models/frontend/Config';
 
 import ContactCollection from '../shared/models/frontend/ContactCollection';
 import LoanCollection from '../shared/models/frontend/LoanCollection';
+import PhotoCollection from '../shared/models/frontend/PhotoCollection';
 import UserCollection from '../shared/models/frontend/UserCollection';
 import GroupCollection from '../shared/models/frontend/GroupCollection';
 
@@ -22,6 +23,7 @@ class LendyooRegistry
 			// models container
 			this.contactCollection = new ContactCollection();
 			this.loanCollection = new LoanCollection();
+			this.photoCollection = new PhotoCollection();
 			this.userCollection = new UserCollection();
 			this.groupCollection = new GroupCollection();
 

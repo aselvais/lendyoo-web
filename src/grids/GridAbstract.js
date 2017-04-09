@@ -95,7 +95,7 @@ class AbstractGrid extends Component {
 			case "email":
 				return (<a href={ 'mailto:'+e }>{e}</a>);
 			case "mongoDBid":
-				return (<a onClick={ () => this.showEntry(e, key) }>{e}</a>);
+				return (<center><a onClick={ () => this.showEntry(e, key) }><Glyphicon glyph="new-window" /></a></center>);
 			case "boolean":
 				return (e === true) ? (<center><Glyphicon glyph="check" /></center>) : (<center><Glyphicon glyph="unchecked" /></center>);
 			default:

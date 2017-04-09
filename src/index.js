@@ -7,6 +7,7 @@ import './index.css';
 import Home from './sections/Home';
 import Contact from './sections/Contact';
 import Loan from './sections/Loan';
+import Photo from './sections/Photo';
 import User from './sections/User';
 import Group from './sections/Group';
 
@@ -29,6 +30,7 @@ class Index extends Component {
 							<li role="presentation"><IndexLink to="/" activeClassName="active" role="button"> Home </IndexLink></li>
 							<li role="presentation"><Link to="/contact" activeClassName="active" role="button"> Contact </Link></li>
 							<li role="presentation"><Link to="/loan" activeClassName="active" role="button"> Loan </Link></li>
+							<li role="presentation"><Link to="/photo" activeClassName="active" role="button"> Photo </Link></li>
 							<li role="presentation"><Link to="/user" activeClassName="active" role="button"> User </Link></li>
 							<li role="presentation"><Link to="/group" activeClassName="active" role="button"> Group </Link></li>
 						</ul>
@@ -52,6 +54,7 @@ ReactDOM.render(
 			<IndexRoute component={Home}/>
 			<Route path="contact" component={Contact}/>
 			<Route path="loan" component={Loan}/>
+			<Route path="photo" component={Photo}/>
 			<Route path="user" component={User}/>
 			<Route path="group" component={Group}/>
 		</Route>
