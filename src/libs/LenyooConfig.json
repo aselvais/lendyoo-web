@@ -1,12 +1,12 @@
 {
   "defaults": {
-    "API_URL": "http://api.lendyou.io",
+    "API_URL": "https://api.lendyou.io",
     "APP_VERSION" : "0.0.9"
   },
   "development": {
     "API_URL": "http://localhost:3010"
   },
   "production": {
-    "API_URL": "http://api.lendyou.io"
+    "API_URL": "https://api.lendyou.io"
   }
 }
