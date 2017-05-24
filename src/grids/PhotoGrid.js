@@ -1,6 +1,6 @@
 import AbstractGrid from './GridAbstract';
 import _modelSchema from '../shared/models/schemas/Photo.json';
-import React, {Component} from 'react';
+import React from 'react';
 
 /**
  *
