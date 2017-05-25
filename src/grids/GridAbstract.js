@@ -19,12 +19,14 @@ class AbstractGrid extends Component {
 		this.state = {
 			models: []
 		};
+
+
 	}
 
 	/**
 	 * Initialization, taking the schema and building the states with its data
 	 */
-	init()
+	componentDidMount()
 	{
 		this.refreshData();
 	}
@@ -146,6 +148,8 @@ class AbstractGrid extends Component {
 	editEntry(_model)
 	{
 		this.collection.setActiveModel(_model);
+		if (this.lendyooRegistry.currentForm)
+			this.lendyooRegistry.currentForm.setupData();
 		this.setState({models: this.collection.models });
 	}
 

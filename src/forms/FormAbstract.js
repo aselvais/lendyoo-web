@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Form, FormGroup, FormControl, Col, ControlLabel, Button, Alert, Checkbox} from 'react-bootstrap';
+import LendyooRegistry from '../libs/LendyooRegistry';
 
 /**
  * Generic form component; will generate a form based on a Mongoose schema stored in this.modelSchema
@@ -11,17 +12,50 @@ class AbstractForm extends Component {
 	 */
 	init()
 	{
-		var _state = {
+		this.state = {
 			alertVisible: false,
 			alertMessage: '',
 			alertStyle: 'info'
 		};
+
+		this.modelSchema._id = {"type": "String", "required": false};
+
+		// get selected model from collection
+		this.lendyooRegistry = new LendyooRegistry();
+	}
+
+	/**
+	 *
+	 */
+	componentDidMount()
+	{
+		this.setupData();
+		this.lendyooRegistry.currentForm = this;
+	}
+
+	/**
+	 *
+	 */
+	setupData()
+	{
+		this._state = {};
+		if (this.lendyooRegistry[this.modelName + 'Collection' ])
+		{
+			this.collection = this.lendyooRegistry[this.modelName + 'Collection' ];
+			this.activeModel = this.collection.getActiveModel();
+		}
+
+		// setup data
 		for (var k in this.modelSchema)
 		{
-			if (this.modelSchema.hasOwnProperty(k))
-				_state[k] = this.modelSchema[k].default ? this.modelSchema[k].default : "";
+			if (this.modelSchema.hasOwnProperty(k)) {
+				this._state[k] = this.modelSchema[k].default ? this.modelSchema[k].default : "";
+				if (this.activeModel && this.activeModel[k])
+					this._state[k] = this.activeModel[k];
+			}
 		}
-		this.state = _state;
+		console.log(this._state);
+		this.setState(this._state);
 	}
 
 	/**

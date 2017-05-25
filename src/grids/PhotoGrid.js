@@ -16,7 +16,6 @@ class PhotoGrid extends AbstractGrid {
 		this.modelName = 'photo';
 		this.modelSchema = _modelSchema;
 		this.collection = this.lendyooRegistry.photoCollection;
-		this.init();
 	}
 
 

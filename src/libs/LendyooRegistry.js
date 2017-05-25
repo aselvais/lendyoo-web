@@ -27,6 +27,9 @@ class LendyooRegistry
 			this.userCollection = new UserCollection();
 			this.groupCollection = new GroupCollection();
 
+			// the last form component initialized
+			this.currentForm = null;
+
 			_instance = this;
 		}
 		return _instance;
