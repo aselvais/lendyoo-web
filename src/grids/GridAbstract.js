@@ -60,7 +60,7 @@ class AbstractGrid extends Component {
 			if (_model._id)
 			{
 				if (typeof _model[i] !== 'undefined')
-					toret.push(<td key={_model._id + i}>{ this.filterEntryDislpay(_model[i], i) }</td>);
+					toret.push(<td key={_model._id + i}>{ this.filterEntryDislpay(_model[i], i, _model) }</td>);
 				else
 					toret.push(<td key={_model._id + i}></td>);
 			}
@@ -74,7 +74,7 @@ class AbstractGrid extends Component {
 	 * @param key
 	 * @returns {*}
 	 */
-	filterEntryDislpay(e, key)
+	filterEntryDislpay(e, key, model)
 	{
 		/**
 		 * boolean, null, undefined, number, string

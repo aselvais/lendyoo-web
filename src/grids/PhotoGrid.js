@@ -6,6 +6,7 @@ import React from 'react';
  *
  */
 class PhotoGrid extends AbstractGrid {
+
 	/**
 	 *
 	 * @param props
@@ -18,21 +19,24 @@ class PhotoGrid extends AbstractGrid {
 		this.collection = this.lendyooRegistry.photoCollection;
 	}
 
-
 	/**
 	 * Returns a filtered/enhanced representation of a field
 	 * @param e
 	 * @param key
 	 * @returns {*}
 	 */
-	filterEntryDislpay(e, key)
+	filterEntryDislpay(e, key, model)
 	{
-		if (key === 'data')
+		if (key.toString() === 'Loan_id')
 		{
-			return (<img src={ 'data:image/jpg;base64, '+ e } width="200" alt="Red dot" />);
+			var toret = [];
+			var imgurl = this.lendyooRegistry.config.API_URL + '/api-v2/photo/getloanimage/' + model.Loan_id + '/150';
+			toret.push( super.filterEntryDislpay(e, key, model) );
+			toret.push(<img src={ imgurl } width="150" />);
+			return toret;
 		}
 		else
-			return super.filterEntryDislpay(e, key);
+			return super.filterEntryDislpay(e, key, model);
 	}
 
 }
