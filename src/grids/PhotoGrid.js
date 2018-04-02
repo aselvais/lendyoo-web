@@ -32,7 +32,7 @@ class PhotoGrid extends AbstractGrid {
 			var toret = [];
 			var imgurl = this.lendyooRegistry.config.API_URL + '/api-v2/photo/getloanimage/' + model.Loan_id + '/150';
 			toret.push( super.filterEntryDislpay(e, key, model) );
-			toret.push(<img src={ imgurl } width="150" />);
+			toret.push(<img alt={ 'img-' + model.Loan_id} src={ imgurl } width="150" />);
 			return toret;
 		}
 		else
